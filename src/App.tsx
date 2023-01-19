@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {CounterWithLocalStorage} from "./CounterWithLocalStorage/CounterWithLocalStorage";
+import {CounterWithoutLocalStorage} from "./CounterWithLocalStorage/CounterWithoutLocalStorage";
 
 function App() {
   return (
-    <div className={'App'}>
-  <CounterWithLocalStorage/>
+    <div>
+  <CounterWithoutLocalStorage/>
     </div>
   );
 }

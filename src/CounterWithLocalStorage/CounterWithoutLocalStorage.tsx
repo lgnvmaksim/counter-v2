@@ -1,4 +1,5 @@
 import React, {ChangeEvent, memo, useCallback, useEffect, useState} from 'react';
+import s from './CounterWithoutLS.module.css'
 
 type ValueType = {
     minValue: number,
@@ -10,7 +11,7 @@ type ValueType = {
     error: boolean
 }
 
-export const CounterWithLocalStorage = memo(() => {
+export const CounterWithoutLocalStorage = memo(() => {
     const [value, setValue] = useState<ValueType>({
         minValue: 1,
         maxValue: 5,
@@ -73,29 +74,43 @@ export const CounterWithLocalStorage = memo(() => {
     }
 
 
-    return <div>
-        <span>min value</span>
-        <input
-            id={'min'}
-            type={'number'}
-            value={value.minValue}
-            onChange={onChangeHandler}
-        />
-        <span>max value</span>
-        <input
-            id={'max'}
-            type={'number'}
-            value={value.maxValue}
-            onChange={onChangeHandler}
-        />
-        <button onClick={onClickSetHandler} disabled={checkCorrectValue()}>Жмяк</button>
-        <div>{value.startValue} </div>
-        <div> {message}</div>
+    return <div className={s.container}>
+        <div className={s.leftBlock}>
+            <div className={s.insideLeftBlock}>
+                <div className={s.span}>
+                    <span className={s.textValue}>min value</span>
+                    <input className={s.enteredInput}
+                           id={'min'}
+                           type={'number'}
+                           value={value.minValue}
+                           onChange={onChangeHandler}
+                    />
+                </div>
+                <div className={s.span}>
+                    <span className={s.textValue}>max value</span>
+                    <input className={s.enteredInput}
+                           id={'max'}
+                           type={'number'}
+                           value={value.maxValue}
+                           onChange={onChangeHandler}
+                    />
+                </div>
 
-        <hr/>
-        <div>minEnteredValue: {value.minEnteredValue}</div>
-        <div>maxEnteredValue: {value.maxEnteredValue}</div>
-        <button onClick={onClickStartHandler} disabled={disabledButtonToStart()}>Вперед</button>
-        <button onClick={onClickResetHandler}>Обнулить</button>
+            </div>
+            <div className={s.buttonContainer}>
+                <button className={s.setButton} onClick={onClickSetHandler} disabled={checkCorrectValue()}>set</button>
+            </div>
+
+        </div>
+
+        <div className={s.rightBlock}>
+            <div>{value.startValue} </div>
+            <div> {message}</div>
+            <button onClick={onClickStartHandler} disabled={disabledButtonToStart()}>Вперед</button>
+            <button onClick={onClickResetHandler}>Обнулить</button>
+
+        </div>
+
+
     </div>
 })
