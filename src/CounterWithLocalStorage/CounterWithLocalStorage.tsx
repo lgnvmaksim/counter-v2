@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, memo, useCallback, useState} from 'react';
 
 type ValueType = {
     minValue: number,
@@ -7,11 +7,10 @@ type ValueType = {
     maxEnteredValue: number,
     startValue: number | null
     step: number,
-    message: string | null
     error: boolean
 }
 
-export const CounterWithLocalStorage = () => {
+export const CounterWithLocalStorage = memo (() => {
     const [value, setValue] = useState<ValueType>({
         minValue: 0,
         maxValue: 1,
@@ -20,52 +19,59 @@ export const CounterWithLocalStorage = () => {
         startValue: 0,
         step: 1,
         error: false,
-        message: null
     })
+    const [message, setMessage] = useState<string | null>('Нажми на "Жмяк! и узри магию!')
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
         setValue({
             ...value,
-            [e.currentTarget.id + 'Value']: +e.currentTarget.value,
-            message: 'Выбери что-нить и жмякай "Жмяк!"',
-            startValue: null
+            [e.currentTarget.id + 'Value']: +e.currentTarget.value, startValue: null
         })
-    }
+        setMessage('Выбери что-нить и жмякай "Жмяк!"')
+    }, [value])
 
-    const onClickSetHandler = () => {
+    const onClickSetHandler = useCallback ( () => {
         setValue({
             ...value,
             minEnteredValue: value.minValue,
             maxEnteredValue: value.maxValue,
             startValue: value.minValue,
-            message: null
         })
-    }
+        setMessage(null)
+    }, [value] )
 
-    const onClickStartHandler = () => {
+    const onClickStartHandler = useCallback ( () => {
         if (value.startValue) {
             setValue({
                 ...value,
                 startValue: value.startValue + value.step
             })
         }
-    }
+    },[value])
 
-    const onClickResetHandler = () => {
+    const onClickResetHandler = useCallback (() => {
         if (value.startValue !== null) {
             setValue({...value, startValue: value.minEnteredValue})
         }
+    },[value])
 
-    }
+    const checkCorrectValue = useCallback(() => {
+        let checkCorrectValue: boolean = (value.startValue === value.maxValue
+            || Number(value.startValue) > value.maxValue
+            || Number(value.startValue) <= 0
+            || value.maxValue <= 0)
+        checkCorrectValue&& setMessage('Ата-та по рукам! Не может быть так! Верни корректные значения!')
+        return checkCorrectValue
+    },[value, message])
 
     let blockButton: boolean = false
 
-    const disabledButtonToStart = () => {
+    const disabledButtonToStart = useCallback (() => {
         if (value.startValue === value.maxEnteredValue) {
             blockButton = true
         }
         return blockButton
-    }
+    },[value])
 
 
     return <div>
@@ -84,7 +90,7 @@ export const CounterWithLocalStorage = () => {
             onChange={onChangeHandler}
         />
         <button onClick={onClickSetHandler}>Жмяк</button>
-        <div>{value.startValue} {value.message} </div>
+        <div>{value.startValue} {message} </div>
 
         <hr/>
         <div>minEnteredValue: {value.minEnteredValue}</div>
@@ -92,4 +98,4 @@ export const CounterWithLocalStorage = () => {
         <button onClick={onClickStartHandler} disabled={disabledButtonToStart()}>Вперед</button>
         <button onClick={onClickResetHandler}>Обнулить</button>
     </div>
-};
+})
