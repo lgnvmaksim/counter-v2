@@ -61,7 +61,7 @@ export const CounterWithoutLocalStorage = memo(() => {
     const checkCorrectValue = () => value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
     useEffect(() => {
         if (checkCorrectValue()) {
-            setMessage('Ата-та по рукам! Введи корректные значения')
+            setMessage('Введи корректные значения')
         }
     }, [value.minValue, value.maxValue])
 
@@ -104,10 +104,17 @@ export const CounterWithoutLocalStorage = memo(() => {
         </div>
 
         <div className={s.rightBlock}>
-            <div>{value.startValue} </div>
-            <div> {message}</div>
-            <button onClick={onClickStartHandler} disabled={disabledButtonToStart()}>Вперед</button>
-            <button onClick={onClickResetHandler}>Обнулить</button>
+            <div className={s.valueContainer}>
+                <div className={s.value}>{value.startValue} </div>
+                <div className={s.message}>{message}</div>
+
+            </div>
+            <div className={s.buttonContainer}>
+                <button className={s.setButton} onClick={onClickStartHandler} disabled={disabledButtonToStart()}>inc
+                </button>
+                <button className={s.setButton} onClick={onClickResetHandler}>reset</button>
+
+            </div>
 
         </div>
 

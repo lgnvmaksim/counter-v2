@@ -41,12 +41,11 @@ padding: 10px;
     color: #009db9;
 }
 
-
-
 .enteredInput{
     border: 2px solid  #009db9;
     border-radius: 5px;
     text-align: center;
+    font-family: 'Concert One', 'Concert One', cursive;
 }
 
 .buttonContainer{
@@ -62,14 +61,40 @@ padding: 10px;
     background-color: #009db9;
     border: none;
     border-radius: 18px;
+    padding: 0 13px;
 }
 
 .rightBlock{
     display: flex;
     padding: 20px;
     flex-direction: column;
-    flex-wrap: nowrap;
-    border: 3px solid #009db9;
     border-radius: 8px;
     width: 300px;
+    border: 3px solid #009db9;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.valueContainer{
+    font-family: 'Concert One', cursive;
+    color: #009db9;
+    font-size: 30px;
+    border: 3px solid #009db9;
+    border-radius: 8px;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.value{
+
+}
+
+
+.message{
+
 }
