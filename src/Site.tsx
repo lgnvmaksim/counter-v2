@@ -1,5 +1,5 @@
 import React from 'react';
-import {CounterWithoutLocalStorage} from "./CounterWithLocalStorage/CounterWithoutLocalStorage";
+import {CounterWithoutLocalStorage} from "./CounterWithoutLocalStorage/CounterWithoutLocalStorage";
 import {Navigate, NavLink, Route, Routes} from "react-router-dom";
 
 export const Site = () => {

@@ -1,7 +1,9 @@
-import React, {ChangeEvent, memo, useCallback, useEffect, useState} from 'react';
+import React, { memo, useCallback, useState} from 'react';
 import s from './CounterWithoutLS.module.css'
+import {InputSuper} from "../Components/InputSuper";
+import {ButtonSuper} from "../Components/ButtonSuper";
 
-type ValueType = {
+export type ValueType = {
     minValue: number,
     maxValue: number,
     minEnteredValue: number,
@@ -21,15 +23,8 @@ export const CounterWithoutLocalStorage = memo(() => {
         step: 1,
         error: false,
     })
-    const [message, setMessage] = useState<string | null>('Нажми на "Жмяк! и узри магию!')
 
-    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setValue({
-            ...value,
-            [e.currentTarget.id + 'Value']: +e.currentTarget.value, startValue: null
-        })
-        setMessage('Выбери что-нить и жмякай "Жмяк!"')
-    }, [value])
+    const [message, setMessage] = useState<string | null>('Нажми на "Жмяк! и узри магию!')
 
     const onClickSetHandler = useCallback(() => {
         setValue({
@@ -59,11 +54,13 @@ export const CounterWithoutLocalStorage = memo(() => {
     let blockButton: boolean = false
 
     const checkCorrectValue = () => value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
-    useEffect(() => {
-        if (checkCorrectValue()) {
-            setMessage('Введи корректные значения')
-        }
-    }, [value.minValue, value.maxValue])
+
+    // useEffect(() => {
+    //     if (checkCorrectValue()) {
+    //         setMessage('Введи корректные значения')
+    //         console.log(message)
+    //     }
+    // }, [value.minValue, value.maxValue])
 
 
     const disabledButtonToStart = () => {
@@ -79,26 +76,18 @@ export const CounterWithoutLocalStorage = memo(() => {
             <div className={s.insideLeftBlock}>
                 <div className={s.span}>
                     <span className={s.textValue}>min value</span>
-                    <input className={s.enteredInput}
-                           id={'min'}
-                           type={'number'}
-                           value={value.minValue}
-                           onChange={onChangeHandler}
-                    />
+                    <InputSuper value={value} setValue={setValue} setMessage={setMessage} id={'min'}
+                                startValue={value.minValue}/>
                 </div>
                 <div className={s.span}>
                     <span className={s.textValue}>max value</span>
-                    <input className={s.enteredInput}
-                           id={'max'}
-                           type={'number'}
-                           value={value.maxValue}
-                           onChange={onChangeHandler}
-                    />
+                    <InputSuper value={value} setValue={setValue} setMessage={setMessage} id={'max'}
+                                startValue={value.maxValue}/>
                 </div>
 
             </div>
             <div className={s.buttonContainer}>
-                <button className={s.setButton} onClick={onClickSetHandler} disabled={checkCorrectValue()}>set</button>
+                <ButtonSuper onClickCallback={onClickSetHandler} disabled={checkCorrectValue()} name={'set'}/>
             </div>
 
         </div>
@@ -107,12 +96,11 @@ export const CounterWithoutLocalStorage = memo(() => {
             <div className={s.valueContainer}>
                 <div className={s.value}>{value.startValue} </div>
                 <div className={s.message}>{message}</div>
-
             </div>
             <div className={s.buttonContainer}>
-                <button className={s.setButton} onClick={onClickStartHandler} disabled={disabledButtonToStart()}>inc
-                </button>
-                <button className={s.setButton} onClick={onClickResetHandler}>reset</button>
+                <ButtonSuper onClickCallback={onClickStartHandler} name={'inc'} disabled={disabledButtonToStart()}/>
+                <ButtonSuper onClickCallback={onClickResetHandler} name={'reset'}/>
+
 
             </div>
 
