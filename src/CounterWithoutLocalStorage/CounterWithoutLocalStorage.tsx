@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import s from './CounterWithoutLS.module.css'
 import {InputSuper} from "../Components/InputSuper";
 import {ButtonSuper} from "../Components/ButtonSuper";
@@ -23,8 +23,7 @@ export const CounterWithoutLocalStorage = memo(() => {
         step: 1,
         error: false,
     })
-
-    const [message, setMessage] = useState<string | null>('Нажми на "Жмяк! и узри магию!')
+    const [message, setMessage] = useState<string | null>('Нажми на "set" и узри магию!')
 
     const onClickSetHandler = useCallback(() => {
         setValue({
@@ -53,18 +52,18 @@ export const CounterWithoutLocalStorage = memo(() => {
 
     let blockButton: boolean = false
 
-    const checkCorrectValue = () => value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
+    const checkCorrectValue: boolean = value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
 
-    // useEffect(() => {
-    //     if (checkCorrectValue()) {
-    //         setMessage('Введи корректные значения')
-    //         console.log(message)
-    //     }
-    // }, [value.minValue, value.maxValue])
+    useEffect(() => {
+        if (checkCorrectValue) {
+            setMessage('Введи корректные значения')
+            console.log(message)
+        }
+    }, [value.minValue, value.maxValue])
 
 
     const disabledButtonToStart = () => {
-        if (value.startValue === value.maxEnteredValue) {
+        if (value.startValue === value.maxEnteredValue || message) {
             blockButton = true
         }
         return blockButton
@@ -77,29 +76,29 @@ export const CounterWithoutLocalStorage = memo(() => {
                 <div className={s.span}>
                     <span className={s.textValue}>min value</span>
                     <InputSuper value={value} setValue={setValue} setMessage={setMessage} id={'min'}
-                                startValue={value.minValue}/>
+                                startValue={value.minValue} checkCorrectValue={checkCorrectValue}/>
                 </div>
                 <div className={s.span}>
                     <span className={s.textValue}>max value</span>
                     <InputSuper value={value} setValue={setValue} setMessage={setMessage} id={'max'}
-                                startValue={value.maxValue}/>
+                                startValue={value.maxValue} checkCorrectValue={checkCorrectValue}/>
                 </div>
 
             </div>
             <div className={s.buttonContainer}>
-                <ButtonSuper onClickCallback={onClickSetHandler} disabled={checkCorrectValue()} name={'set'}/>
+                <ButtonSuper  onClickCallback={onClickSetHandler} disabled={checkCorrectValue} name={'set'}/>
             </div>
 
         </div>
 
         <div className={s.rightBlock}>
             <div className={s.valueContainer}>
-                <div className={s.value}>{value.startValue} </div>
+                <div className={value.startValue === value.maxValue ? s.value : ''}>{value.startValue} </div>
                 <div className={s.message}>{message}</div>
             </div>
             <div className={s.buttonContainer}>
                 <ButtonSuper onClickCallback={onClickStartHandler} name={'inc'} disabled={disabledButtonToStart()}/>
-                <ButtonSuper onClickCallback={onClickResetHandler} name={'reset'}/>
+                <ButtonSuper onClickCallback={onClickResetHandler} name={'reset'} disabled={!!message}/>
 
 
             </div>

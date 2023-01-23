@@ -46,6 +46,15 @@ padding: 10px;
     border-radius: 5px;
     text-align: center;
     font-family: 'Concert One', 'Concert One', cursive;
+
+}
+
+.enteredErrorInput{
+    border: 2px solid #fd0231;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Concert One', 'Concert One', cursive;
+    background-color: #b65959;
 }
 
 .buttonContainer{
@@ -63,6 +72,19 @@ padding: 10px;
     border-radius: 18px;
     padding: 0 13px;
 }
+
+
+.setButton:hover{
+    background-color: #01c1e7;
+}
+
+.setButton:active{
+    background-color: #005e70;
+}
+.setButton:disabled{
+    background-color: #00d8ff;
+}
+
 
 .rightBlock{
     display: flex;
@@ -90,7 +112,11 @@ padding: 10px;
     text-align: center;
 }
 
+
 .value{
+    font-family: 'Concert One', cursive;
+    color: #f52222;
+    font-size: 40px;
 
 }
 
