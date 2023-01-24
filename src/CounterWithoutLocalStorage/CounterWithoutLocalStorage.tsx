@@ -25,6 +25,7 @@ export const CounterWithoutLocalStorage = memo(() => {
     })
     const [message, setMessage] = useState<string | null>('Нажми на "set" и узри магию!')
 
+
     const onClickSetHandler = useCallback(() => {
         setValue({
             ...value,
@@ -50,10 +51,8 @@ export const CounterWithoutLocalStorage = memo(() => {
         }
     }, [value])
 
-    let blockButton: boolean = false
 
     const checkCorrectValue: boolean = value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
-
     useEffect(() => {
         if (checkCorrectValue) {
             setMessage('Введи корректные значения')
@@ -62,6 +61,7 @@ export const CounterWithoutLocalStorage = memo(() => {
     }, [value.minValue, value.maxValue])
 
 
+    let blockButton: boolean = false
     const disabledButtonToStart = () => {
         if (value.startValue === value.maxEnteredValue || message) {
             blockButton = true
