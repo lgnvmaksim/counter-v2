@@ -1,6 +1,5 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, memo, useCallback, useEffect, useState} from 'react';
 import s from './CounterWithoutLS.module.css'
-import {InputSuper} from "../Components/InputSuper";
 import {ButtonSuper} from "../Components/ButtonSuper";
 
 export type ValueType = {
@@ -69,19 +68,35 @@ export const CounterWithoutLocalStorage = memo(() => {
         return blockButton
     }
 
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.currentTarget.id + 'Value']: +e.currentTarget.value, startValue: null
+        })
+        setMessage('Выбери что-нить и жмякай "Set!"')
+    }
+
 
     return <div className={s.container}>
         <div className={s.leftBlock}>
             <div className={s.insideLeftBlock}>
                 <div className={s.span}>
                     <span className={s.textValue}>min value</span>
-                    <InputSuper value={value} setValue={setValue} setMessage={setMessage} id={'min'}
-                                startValue={value.minValue} checkCorrectValue={checkCorrectValue}/>
+                    <input className={checkCorrectValue ? s.enteredErrorInput :s.enteredInput}
+                           id={'min'}
+                           type={'number'}
+                           value={value.minValue}
+                           onChange={onChangeHandler}
+                    />
                 </div>
                 <div className={s.span}>
                     <span className={s.textValue}>max value</span>
-                    <InputSuper value={value} setValue={setValue} setMessage={setMessage} id={'max'}
-                                startValue={value.maxValue} checkCorrectValue={checkCorrectValue}/>
+                    <input className={checkCorrectValue ? s.enteredErrorInput :s.enteredInput}
+                           id={'max'}
+                           type={'number'}
+                           value={value.maxValue}
+                           onChange={onChangeHandler}
+                    />
                 </div>
 
             </div>
