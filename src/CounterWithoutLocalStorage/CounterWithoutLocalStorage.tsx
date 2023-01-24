@@ -55,7 +55,6 @@ export const CounterWithoutLocalStorage = memo(() => {
     useEffect(() => {
         if (checkCorrectValue) {
             setMessage('Введи корректные значения')
-            console.log(message)
         }
     }, [value.minValue, value.maxValue])
 
@@ -73,7 +72,7 @@ export const CounterWithoutLocalStorage = memo(() => {
             ...value,
             [e.currentTarget.id + 'Value']: +e.currentTarget.value, startValue: null
         })
-        setMessage('Выбери что-нить и жмякай "Set!"')
+        !checkCorrectValue && setMessage('Выбери что-нить и жмякай "Set!"')
     }
 
 
@@ -82,7 +81,7 @@ export const CounterWithoutLocalStorage = memo(() => {
             <div className={s.insideLeftBlock}>
                 <div className={s.span}>
                     <span className={s.textValue}>min value</span>
-                    <input className={checkCorrectValue ? s.enteredErrorInput :s.enteredInput}
+                    <input className={checkCorrectValue ? s.enteredErrorInput : s.enteredInput}
                            id={'min'}
                            type={'number'}
                            value={value.minValue}
@@ -91,19 +90,17 @@ export const CounterWithoutLocalStorage = memo(() => {
                 </div>
                 <div className={s.span}>
                     <span className={s.textValue}>max value</span>
-                    <input className={checkCorrectValue ? s.enteredErrorInput :s.enteredInput}
+                    <input className={checkCorrectValue ? s.enteredErrorInput : s.enteredInput}
                            id={'max'}
                            type={'number'}
                            value={value.maxValue}
                            onChange={onChangeHandler}
                     />
                 </div>
-
             </div>
             <div className={s.buttonContainer}>
-                <ButtonSuper  onClickCallback={onClickSetHandler} disabled={checkCorrectValue} name={'set'}/>
+                <ButtonSuper onClickCallback={onClickSetHandler} disabled={checkCorrectValue} name={'set'}/>
             </div>
-
         </div>
 
         <div className={s.rightBlock}>
@@ -114,12 +111,7 @@ export const CounterWithoutLocalStorage = memo(() => {
             <div className={s.buttonContainer}>
                 <ButtonSuper onClickCallback={onClickStartHandler} name={'inc'} disabled={disabledButtonToStart()}/>
                 <ButtonSuper onClickCallback={onClickResetHandler} name={'reset'} disabled={!!message}/>
-
-
             </div>
-
         </div>
-
-
     </div>
 })
