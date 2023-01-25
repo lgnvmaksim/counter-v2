@@ -3,16 +3,15 @@ import {ValueType} from "../CounterWithoutLocalStorage";
 type actionType = onClickSetHandlerACType | onClickStartHandlerACType |
     onClickResetHandlerACType | onChangeHandlerACType
 
-// const initialState = {
-//     minValue: 1,
-//     maxValue: 5,
-//     minEnteredValue: 0,
-//     maxEnteredValue: 0,
-//     startValue: null,
-//     step: 1,
-//     error: false,
-// }
-export const CounterReducer = (state:ValueType, action:actionType):ValueType => {
+const initialState: ValueType = {
+    minValue: 1,
+    maxValue: 5,
+    minEnteredValue: 0,
+    maxEnteredValue: 0,
+    startValue: null,
+    step: 1,
+}
+export const CounterReducer = (state:ValueType=initialState, action:actionType):ValueType => {
     switch (action.type) {
         case "ON-CLICK-SET-HANDLER":{
             return {

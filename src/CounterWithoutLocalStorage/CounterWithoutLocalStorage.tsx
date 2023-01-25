@@ -1,13 +1,14 @@
-import React, {ChangeEvent, memo, useEffect, useReducer, useState} from 'react';
+import React, {ChangeEvent, memo, useEffect, useState} from 'react';
 import s from './CounterWithoutLS.module.css'
 import {ButtonSuper} from "../Components/ButtonSuper";
 import {
-    CounterReducer,
     onChangeHandlerAC,
     onClickResetHandlerAC,
     onClickSetHandlerAC,
     onClickStartHandlerAC
 } from "./reducer/CounterReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../store";
 
 export type ValueType = {
     minValue: number,
@@ -19,30 +20,22 @@ export type ValueType = {
 }
 
 export const CounterWithoutLocalStorage = memo(() => {
-    const [value, dispatchValue] = useReducer(CounterReducer,{
-        minValue: 1,
-        maxValue: 5,
-        minEnteredValue: 0,
-        maxEnteredValue: 0,
-        startValue: null,
-        step: 1,
-    })
+    const value = useSelector<AppRootStateType, ValueType>(state => state.counter)
+    const dispatch = useDispatch()
+
     const [message, setMessage] = useState<string | null>('Нажми на "set" и узри магию!')
-
-
     const onClickSetHandler = () => {
-        dispatchValue(onClickSetHandlerAC())
+        dispatch(onClickSetHandlerAC())
         setMessage(null)
     }
 
     const onClickStartHandler = () => {
-        dispatchValue(onClickStartHandlerAC())
+        dispatch(onClickStartHandlerAC())
     }
 
     const onClickResetHandler = () => {
-        dispatchValue(onClickResetHandlerAC())
+        dispatch(onClickResetHandlerAC())
     }
-
 
     const checkCorrectValue: boolean = value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
     useEffect(() => {
@@ -61,7 +54,7 @@ export const CounterWithoutLocalStorage = memo(() => {
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-         dispatchValue(onChangeHandlerAC(e.currentTarget.id + 'Value', +e.currentTarget.value))
+        dispatch(onChangeHandlerAC(e.currentTarget.id + 'Value', +e.currentTarget.value))
         !checkCorrectValue && setMessage('Выбери что-нить и жмякай "Set!"')
     }
 
