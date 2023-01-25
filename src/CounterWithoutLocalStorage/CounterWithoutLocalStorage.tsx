@@ -1,6 +1,13 @@
-import React, {ChangeEvent, memo, useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, memo, useEffect, useReducer, useState} from 'react';
 import s from './CounterWithoutLS.module.css'
 import {ButtonSuper} from "../Components/ButtonSuper";
+import {
+    CounterReducer,
+    onChangeHandlerAC,
+    onClickResetHandlerAC,
+    onClickSetHandlerAC,
+    onClickStartHandlerAC
+} from "./reducer/CounterReducer";
 
 export type ValueType = {
     minValue: number,
@@ -9,46 +16,32 @@ export type ValueType = {
     maxEnteredValue: number,
     startValue: number | null
     step: number,
-    error: boolean
 }
 
 export const CounterWithoutLocalStorage = memo(() => {
-    const [value, setValue] = useState<ValueType>({
+    const [value, dispatchValue] = useReducer(CounterReducer,{
         minValue: 1,
         maxValue: 5,
         minEnteredValue: 0,
         maxEnteredValue: 0,
         startValue: null,
         step: 1,
-        error: false,
     })
     const [message, setMessage] = useState<string | null>('Нажми на "set" и узри магию!')
 
 
-    const onClickSetHandler = useCallback(() => {
-        setValue({
-            ...value,
-            minEnteredValue: value.minValue,
-            maxEnteredValue: value.maxValue,
-            startValue: value.minValue,
-        })
+    const onClickSetHandler = () => {
+        dispatchValue(onClickSetHandlerAC())
         setMessage(null)
-    }, [value])
+    }
 
-    const onClickStartHandler = useCallback(() => {
-        if (value.startValue) {
-            setValue({
-                ...value,
-                startValue: value.startValue + value.step
-            })
-        }
-    }, [value])
+    const onClickStartHandler = () => {
+        dispatchValue(onClickStartHandlerAC())
+    }
 
-    const onClickResetHandler = useCallback(() => {
-        if (value.startValue !== null) {
-            setValue({...value, startValue: value.minEnteredValue})
-        }
-    }, [value])
+    const onClickResetHandler = () => {
+        dispatchValue(onClickResetHandlerAC())
+    }
 
 
     const checkCorrectValue: boolean = value.minValue <= 0 || value.maxValue <= 0 || value.minValue >= value.maxValue
@@ -56,7 +49,7 @@ export const CounterWithoutLocalStorage = memo(() => {
         if (checkCorrectValue) {
             setMessage('Введи корректные значения')
         }
-    }, [value.minValue, value.maxValue])
+    }, [checkCorrectValue])
 
 
     let blockButton: boolean = false
@@ -68,10 +61,7 @@ export const CounterWithoutLocalStorage = memo(() => {
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue({
-            ...value,
-            [e.currentTarget.id + 'Value']: +e.currentTarget.value, startValue: null
-        })
+         dispatchValue(onChangeHandlerAC(e.currentTarget.id + 'Value', +e.currentTarget.value))
         !checkCorrectValue && setMessage('Выбери что-нить и жмякай "Set!"')
     }
 
